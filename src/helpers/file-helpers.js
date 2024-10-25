@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
-import path from 'path';
 import matter from 'gray-matter';
+import path from 'path';
 
 export async function getBlogPostList() {
   const fileNames = await readDirectory('/content');
