@@ -1,11 +1,12 @@
 import BlogHero from '@/components/BlogHero';
 import CodeSnippet from '@/components/CodeSnippet';
-import DivisionGroupsDemo from '@/components/DivisionGroupsDemo';
+// import DivisionGroupsDemo from '@/components/DivisionGroupsDemo';
 import { loadBlogPost } from '@/helpers/file-helpers';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import React from 'react';
 import styles from './postSlug.module.css';
 
+const DivisionGroupsDemo = React.lazy(() => import('@/components/DivisionGroupsDemo'));
 export async function generateMetadata({ params }) {
   const blogPost = await fetchBlogPost(params.postSlug);
 
@@ -25,7 +26,9 @@ async function BlogPost({params}) {
         publishedOn={blogPost.frontmatter.publishedOn}
       />
       <div className={styles.page}>
-        <MDXRemote source={blogPost.content} components={{pre: CodeSnippet, DivisionGroupsDemo}} />
+        <React.Suspense fallback={<p>Loading...</p>}>
+          <MDXRemote source={blogPost.content} components={{pre: CodeSnippet, DivisionGroupsDemo}} />
+        </React.Suspense>
       </div>
     </article>
   );
