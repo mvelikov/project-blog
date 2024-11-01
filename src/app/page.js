@@ -1,7 +1,15 @@
 
 import BlogSummaryCard from '@/components/BlogSummaryCard';
+import { BLOG_TITLE } from '@/constants';
 import { getBlogPostList } from '@/helpers/file-helpers';
 import styles from './homepage.module.css';
+
+export async function generateMetadata() {
+
+  return {
+    title: BLOG_TITLE,
+  };
+}
 
 async function Home() {
   const data = await getBlogPostList()

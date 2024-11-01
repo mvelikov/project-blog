@@ -1,10 +1,20 @@
 import BlogHero from '@/components/BlogHero';
 import { loadBlogPost } from '@/helpers/file-helpers';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import React from 'react';
 import styles from './postSlug.module.css';
 
+export async function generateMetadata({ params }) {
+  const blogPost = await fetchBlogPost(params.postSlug);
+
+  return {
+    title: blogPost.frontmatter.title,
+    description: blogPost.frontmatter.abstract,
+  };
+}
+
 async function BlogPost({params}) {
-  const blogPost = await loadBlogPost(params.postSlug)
+  const blogPost = await fetchBlogPost(params.postSlug);
 
   return (
     <article className={styles.wrapper}>
@@ -20,3 +30,7 @@ async function BlogPost({params}) {
 }
 
 export default BlogPost;
+
+const fetchBlogPost = React.cache(async function(slug) {
+  return await loadBlogPost(slug)
+})
