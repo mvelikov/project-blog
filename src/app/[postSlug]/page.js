@@ -1,6 +1,5 @@
 import BlogHero from '@/components/BlogHero';
 import CodeSnippet from '@/components/CodeSnippet';
-// import DivisionGroupsDemo from '@/components/DivisionGroupsDemo';
 import { loadBlogPost } from '@/helpers/file-helpers';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import React from 'react';

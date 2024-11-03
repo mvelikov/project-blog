@@ -1,13 +1,20 @@
 'use client';
-import React from 'react';
-import clsx from 'clsx';
-
-import { range } from '@/utils';
 import Card from '@/components/Card';
 import SliderControl from '@/components/SliderControl';
+import { range } from '@/utils';
+import clsx from 'clsx';
+import { MotionConfig } from 'framer-motion';
+import React from 'react';
 
-import Equation from './Equation';
+import { motion } from 'framer-motion';
 import styles from './DivisionGroupsDemo.module.css';
+import Equation from './Equation';
+
+const SPRING = {
+  type: 'spring',
+  stiffness: 200,
+  damping: 40,
+};
 
 function DivisionGroupsDemo({
   numOfItems = 12,
@@ -59,18 +66,21 @@ function DivisionGroupsDemo({
           className={clsx(styles.demoArea)}
           style={gridStructure}
         >
+          <MotionConfig reducedMotion="user">
           {range(numOfGroups).map((groupIndex) => (
-            <div key={groupIndex} className={styles.group}>
+            <motion.div key={groupIndex} className={styles.group} layout={true} transition={SPRING}>
               {range(numOfItemsPerGroup).map((index) => {
                 return (
-                  <div
+                  <motion.div
+                    layout="size"
                     key={index}
                     className={styles.item}
                   />
                 );
               })}
-            </div>
+            </motion.div>
           ))}
+          </MotionConfig>
         </div>
       </div>
 
