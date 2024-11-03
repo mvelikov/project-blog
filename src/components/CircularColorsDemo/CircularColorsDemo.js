@@ -1,9 +1,10 @@
-import React from 'react';
+'use client';
 import clsx from 'clsx';
+import React from 'react';
 import {
-  Play,
   Pause,
-  RotateCcw,
+  Play,
+  RotateCcw
 } from 'react-feather';
 
 import Card from '@/components/Card';
@@ -18,12 +19,31 @@ const COLORS = [
 ];
 
 function CircularColorsDemo() {
-  // TODO: This value should increase by 1 every second:
-  const timeElapsed = 0;
+  const ref = React.useRef(0);
+  const [timeElapsed, setTimeElapsed] = React.useState(ref.current);
+  const [started, setStarted] = React.useState(false);
 
+  React.useEffect(() => {
+    if (!started) return
+
+    const interval = setInterval(() => {
+      setTimeElapsed(ref.current++)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [started])
+
+  function handleClick() {
+    setTimeElapsed(ref.current++)
+    setStarted(started => !started)
+  }
+
+  function resetCounter() {
+    ref.current = 0
+    setTimeElapsed(0)
+  }
   // TODO: This value should cycle through the colors in the
   // COLORS array:
-  const selectedColor = COLORS[0];
+  const selectedColor = COLORS[timeElapsed % COLORS.length];
 
   return (
     <Card as="section" className={styles.wrapper}>
@@ -70,11 +90,11 @@ function CircularColorsDemo() {
         </dl>
         <div className={styles.actions}>
           <button>
-            <Play />
+            {started ? <Pause onClick={handleClick} /> : <Play onClick={handleClick} />}
             <VisuallyHidden>Play</VisuallyHidden>
           </button>
           <button>
-            <RotateCcw />
+            <RotateCcw onClick={resetCounter} />
             <VisuallyHidden>Reset</VisuallyHidden>
           </button>
         </div>
